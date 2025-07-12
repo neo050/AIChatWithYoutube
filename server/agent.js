@@ -2,20 +2,24 @@ import { ChatOpenAI } from "@langchain/openai";
 import "dotenv/config";
 import {createReactAgent} from "@langchain/langgraph/prebuilt";
 import data from "./data.js";
-import {vectorstores,addYTVtoVectorStores} from "./embeddings.js";
+import {vectorstore,addYTVtoVectorStores} from "./embeddings.js";
 import { tool } from "@langchain/core/tools";   
 import { z } from "zod";
 import { MemorySaver } from "@langchain/langgraph";
 
-await addYTVtoVectorStores(data[0]); 
-await addYTVtoVectorStores(data[1]); 
+// await addYTVtoVectorStores(data[0]); 
+// await addYTVtoVectorStores(data[1]); 
 
 
   const retrieverTool =  tool(async ({query},{configurable:{video_id}})=>{
   console.log("Retrieving docs for query: ----------------------");
   console.log(query);
   console.log(video_id);
-  const retrievedDocs = await vectorstores.similaritySearch(query, 3,(doc)=>doc.metadata.video_id===video_id);
+  const retrievedDocs = await vectorstore.similaritySearch(
+    query, 
+    3,
+    {video_id}
+  );
   console.log("Retrieved docs: ----------------------");
   console.log(retrievedDocs);
 

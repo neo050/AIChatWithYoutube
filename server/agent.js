@@ -44,29 +44,12 @@ const llm = new ChatOpenAI({
 
 const checkpointer= new MemorySaver();
 
-const agent = createReactAgent({
+export const agent = createReactAgent({
   llm,
   tools: [retrieverTool],
   prompt: "",
   checkpointer
 });
-
-const video_id = data[1].video_id;
-
-try{
-  const result  = await agent.invoke({
-  messages: [{role: "user", content: "How to integrate AI into an existing backend?"}],
-  chat_history: [],
-},{configurable:{thread_id:1,video_id},recursionLimit:25});
-console.log(result .messages[result.messages.length -1].content);
-}
-catch(e){
-  
-  console.log("No relation to the topic");
-  console.log(e);
-}
-
-
 
 
 
